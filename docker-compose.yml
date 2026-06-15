@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8
+
+    container_name: geekrent_mysql
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: geekrent
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  auth-service:
+
+    build: ./auth-service
+
+    container_name: auth_service
+
+    ports:
+      - "3001:3001"
+
+    env_file:
+      - ./auth-service/.env
+
+    depends_on:
+      - mysql
+
+  item-service:
+
+    build: ./item-service
+
+    container_name: item_service
+
+    ports:
+      - "3002:3002"
+
+    env_file:
+      - ./item-service/.env
+
+    depends_on:
+      - mysql
+
+  rental-service:
+
+    build: ./rental-service
+
+    container_name: rental_service
+
+    ports:
+      - "3003:3003"
+
+    env_file:
+      - ./rental-service/.env
+
+    depends_on:
+      - mysql
+
+  frontend:
+
+    build: ./frontend
+
+    container_name: geekrent_frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - auth-service
+      - item-service
+      - rental-service
+
+volumes:
+
+  mysql_data:
