@@ -117,8 +117,14 @@ class AuthController {
     }
 
 
-    async getProfile(req, res) {
+async getProfile(req, res) {
   try {
+
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        error: 'Token inválido (id ausente)'
+      });
+    }
 
     console.log("USER ID:", req.user.id);
 
@@ -128,19 +134,23 @@ class AuthController {
     const items = await repository.getUserItems(req.user.id);
     const stats = await repository.getStats(req.user.id);
 
-    return res.json({ profile, items, stats });
+    return res.json({
+      profile,
+      items,
+      stats
+    });
 
   } catch (error) {
 
-    console.error("🔥 PROFILE ERROR COMPLETO:");
+    console.error("🔥 PROFILE ERROR:");
     console.error(error);
 
     return res.status(500).json({
-      error: error.message,
-      stack: error.stack
+      error: error.message
     });
   }
 }
+
 }
 
 module.exports = new AuthController();
