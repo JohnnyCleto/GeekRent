@@ -1,10 +1,13 @@
 // src/middlewares/apiInterceptor.js
 export function setupInterceptor(api) {
+
   api.interceptors.request.use(
     (config) => {
+
       const token = localStorage.getItem("token");
 
       if (token) {
+        config.headers = config.headers || {};
         config.headers.Authorization = `Bearer ${token}`;
       }
 
@@ -18,10 +21,16 @@ export function setupInterceptor(api) {
     (response) => response,
 
     (error) => {
-      if (error.response?.status === 401) {
+
+      const status = error.response?.status;
+
+      if (status === 401) {
         localStorage.removeItem("token");
 
-        window.location.href = "/login";
+        // evita loop infinito de redirect em build
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
       }
 
       return Promise.reject(error);
