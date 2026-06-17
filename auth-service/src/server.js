@@ -1,3 +1,6 @@
+const initDatabase =
+require('./infrastructure/database/initDatabase');
+
 require('dotenv').config();
 
 const express =
@@ -45,14 +48,26 @@ require('./infrastructure/database/initDatabase');
 
 (async () => {
 
-    await initDatabase();
+    try {
 
-    app.listen(PORT, () => {
+        await initDatabase();
 
-        console.log(
-            `Servidor rodando na porta ${PORT}`
+        app.listen(PORT, () => {
+
+            console.log(
+                `Auth Service rodando na porta ${PORT}`
+            );
+
+        });
+
+    } catch(error) {
+
+        console.error(
+            'Erro ao iniciar banco:',
+            error
         );
 
-    });
+        process.exit(1);
+    }
 
 })();

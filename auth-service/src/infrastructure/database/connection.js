@@ -9,10 +9,15 @@ class DatabaseConnection {
 
         if (!DatabaseConnection.instance) {
 
+            console.log('DB_HOST:', db.host);
+            console.log('DB_PORT:', db.port);
+            console.log('DB_NAME:', db.database);
+            console.log('DB_USER:', db.user);
+
             DatabaseConnection.instance =
                 mysql.createPool({
                     host: db.host,
-                    port: db.port,
+                    port: Number(db.port),
                     user: db.user,
                     password: db.password,
                     database: db.database,
@@ -22,15 +27,16 @@ class DatabaseConnection {
                     queueLimit: 0
                 });
 
-            console.log("✅ MySQL conectado");
+            const connection =
+                await DatabaseConnection.instance.getConnection();
+
+            console.log('✅ Conectado ao MySQL Railway');
+
+            connection.release();
         }
 
         return DatabaseConnection.instance;
     }
 }
-console.log("DB_HOST =", process.env.DB_HOST);
-console.log("DB_PORT =", process.env.DB_PORT);
-console.log("DB_NAME =", process.env.DB_NAME);
-console.log("DB_USER =", process.env.DB_USER);
 
 module.exports = DatabaseConnection;
