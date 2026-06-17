@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+console.log("AUTH URL =", import.meta.env.VITE_AUTH_URL);
+
 export const authApi = axios.create({
   baseURL: import.meta.env.VITE_AUTH_URL
 });
