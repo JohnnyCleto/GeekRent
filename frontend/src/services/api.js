@@ -1,3 +1,5 @@
+// src/services/api.js
+import { setupInterceptor } from '../middlewares/apiInterceptor';
 import axios from 'axios';
 
 export const authApi = axios.create({
@@ -17,3 +19,9 @@ export const rentalApi = axios.create({
 baseURL: import.meta.env.VITE_RENTAL_URL
 
 });
+
+setupInterceptor(authApi);
+
+setupInterceptor(itemApi);
+
+setupInterceptor(rentalApi);

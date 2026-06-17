@@ -1,3 +1,4 @@
+// src/middlewares/apiInterceptor.js
 export function setupInterceptor(api) {
   api.interceptors.request.use(
     (config) => {
