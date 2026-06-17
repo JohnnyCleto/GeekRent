@@ -1,3 +1,4 @@
+// auth-service/src/infrastructure/repositories/UserRepository.js
 const DatabaseConnection =
 require('../database/connection');
 
@@ -64,26 +65,21 @@ class UserRepository {
         return rows[0];
     }
 
-    async getProfile(userId){
+ async getProfile(userId) {
+  if (!userId) throw new Error("userId inválido");
 
-    const db =
-    await DatabaseConnection
-    .getInstance();
+  const db = await DatabaseConnection.getInstance();
 
-    const [rows] =
-    await db.execute(
+  const [rows] = await db.execute(
+    `SELECT id, name, email, role, avatar_url, city, state, bio, rating
+     FROM users
+     WHERE id = ?`,
+    [userId]
+  );
 
-        `
-        SELECT *
-        FROM users
-        WHERE id = ?
-        `,
-
-        [userId]
-    );
-
-    return rows[0];
+  return rows[0];
 }
+
 async getUserItems(userId){
 
     const db =

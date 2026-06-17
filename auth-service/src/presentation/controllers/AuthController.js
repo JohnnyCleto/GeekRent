@@ -66,6 +66,7 @@ class AuthController {
                 },
                 jwtSecret,
                 { expiresIn: '7d' }
+               
             );
 
             return res.json({

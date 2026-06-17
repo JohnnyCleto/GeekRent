@@ -1,3 +1,4 @@
+// auth-service/src/domain/entities/User.js
 class User {
 
     constructor(
