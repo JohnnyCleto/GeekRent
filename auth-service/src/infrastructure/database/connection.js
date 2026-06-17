@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const { db } = require('../../config/env');
-
+const [rows] = await pool.query("SHOW TABLES");
+console.log(rows);
 class DatabaseConnection {
 
     static instance;
