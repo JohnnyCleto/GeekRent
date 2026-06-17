@@ -39,3 +39,20 @@ app.listen(PORT,()=>{
     );
 
 });
+
+const initDatabase =
+require('./infrastructure/database/initDatabase');
+
+(async () => {
+
+    await initDatabase();
+
+    app.listen(PORT, () => {
+
+        console.log(
+            `Servidor rodando na porta ${PORT}`
+        );
+
+    });
+
+})();
