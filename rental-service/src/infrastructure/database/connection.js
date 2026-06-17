@@ -1,3 +1,4 @@
+//  rental-service/src/infrastructure/database/connection.js
 const mysql = require('mysql2/promise');
 
 class DatabaseConnection {

@@ -1,3 +1,4 @@
+// rental-service/src/repositories/RentalRepository.js
 const DatabaseConnection =
 require('../database/connection');
 
