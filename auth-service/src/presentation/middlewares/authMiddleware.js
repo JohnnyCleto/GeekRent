@@ -1,55 +1,34 @@
 // auth-service/src/presentation/middlewares/authMiddleware.js
-const jwt =
-require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const { jwtSecret } = require('../../config/env');
 
-const {
-    jwtSecret
-} = require('../../config/env');
+module.exports = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-module.exports = (
-    req,
-    res,
-    next
-) => {
+  if (!authHeader) {
+    return res.status(401).json({
+      error: 'Token não informado'
+    });
+  }
 
-    const authHeader =
-    req.headers.authorization;
+  const token = authHeader.replace('Bearer ', '');
 
-    if(!authHeader){
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
 
-        return res.status(401)
-        .json({
-            error:'Token não informado'
-        });
-
+    if (!decoded?.id) {
+      return res.status(401).json({
+        error: 'Token inválido (sem id)'
+      });
     }
 
-    const token =
-    authHeader.replace(
-        'Bearer ',
-        ''
-    );
+    req.user = decoded;
 
-    try{
+    next();
 
-        const decoded =
-        jwt.verify(
-            token,
-            jwtSecret
-        );
-
-        req.user =
-        decoded;
-
-        next();
-
-    }catch(error){
-
-        return res.status(401)
-        .json({
-            error:'Token inválido'
-        });
-
-    }
-
+  } catch (error) {
+    return res.status(401).json({
+      error: 'Token inválido'
+    });
+  }
 };

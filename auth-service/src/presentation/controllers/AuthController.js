@@ -87,19 +87,25 @@ class AuthController {
     async getProfile(req, res) {
   try {
 
-    if (!req.user || !req.user.id) {
+    if (!req.user?.id) {
       return res.status(401).json({
-        error: 'Token inválido (id ausente)'
+        error: 'Usuário não autenticado'
       });
     }
 
-    console.log("USER ID:", req.user.id);
-
     const repository = new UserRepository();
 
-    const profile = await repository.getProfile(req.user.id);
-    const items = await repository.getUserItems(req.user.id);
-    const stats = await repository.getStats(req.user.id);
+    const [profile, items, stats] = await Promise.all([
+      repository.getProfile(req.user.id),
+      repository.getUserItems(req.user.id),
+      repository.getStats(req.user.id)
+    ]);
+
+    if (!profile) {
+      return res.status(404).json({
+        error: 'Usuário não encontrado'
+      });
+    }
 
     return res.json({
       profile,
@@ -109,11 +115,11 @@ class AuthController {
 
   } catch (error) {
 
-    console.error("🔥 PROFILE ERROR:");
-    console.error(error);
+    console.error("PROFILE ERROR:", error);
 
     return res.status(500).json({
-      error: error.message
+      error: 'Erro interno no perfil',
+      details: error.message
     });
   }
 }
