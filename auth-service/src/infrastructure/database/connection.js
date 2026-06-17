@@ -1,3 +1,4 @@
+// auth-service/src/infrastructure/database/connection.js
 const mysql = require('mysql2/promise');
 const { db } = require('../../config/env');
 
