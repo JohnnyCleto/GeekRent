@@ -1,41 +1,17 @@
-const express =
-require('express');
+const express = require('express');
 
-const router =
-express.Router();
+const router = express.Router();
 
-const controller =
-require('../controllers/ItemController');
+const controller = require('../controllers/ItemController');
 
-router.post(
- '/',
- controller.create
-);
+router.post('/', controller.create);
 
-router.get(
- '/',
- controller.list
-);
+router.get('/', controller.list);
 
-router.get(
- '/:id',
- controller.findById
-);
+router.get('/:id', controller.findById);
 
-router.put(
- '/:id',
- controller.update
-);
+router.put('/:id', controller.update);
 
-router.delete(
- '/:id',
- controller.delete
-);
+router.delete('/:id', controller.delete);
 
-router.get(
-    '/',
-    ItemController.getAll
-);
-
-module.exports =
-router;
+module.exports = router;
