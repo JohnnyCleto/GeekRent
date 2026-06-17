@@ -1,4 +1,3 @@
-// src/services/api.js
 import axios from 'axios';
 
 export const authApi = axios.create({
@@ -13,9 +12,6 @@ export const rentalApi = axios.create({
   baseURL: 'https://mellow-wholeness-production-4fc6.up.railway.app'
 });
 
-/**
- * 🔥 Interceptor global para todas as APIs
- */
 export function setupInterceptor() {
 
   const addToken = (api) => {
@@ -31,10 +27,7 @@ export function setupInterceptor() {
 
       return config;
 
-    }, (error) => {
-      return Promise.reject(error);
-    });
-
+    }, (error) => Promise.reject(error));
   };
 
   addToken(authApi);
