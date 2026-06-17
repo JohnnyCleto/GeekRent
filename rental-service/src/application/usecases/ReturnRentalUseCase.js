@@ -1,11 +1,15 @@
 const FineStrategyFactory =
-require('../strategies/FineStrategyFactory');
+require(
+'../../infrastructure/strategies/FineStrategyFactory'
+);
 
 class ReturnRentalUseCase {
 
     constructor(repository){
+
         this.repository =
         repository;
+
     }
 
     async execute(
@@ -27,32 +31,49 @@ class ReturnRentalUseCase {
 
             const daysLate =
             Math.ceil(
+
                 (
                     today -
                     endDate
-                ) /
+
+                )
+
+                /
+
                 (
                     1000 *
+
                     60 *
+
                     60 *
+
                     24
+
                 )
+
             );
 
             const strategy =
+
             FineStrategyFactory
-            .create(userType);
+            .create(
+                userType
+            );
 
             fine =
             strategy.calculate(
                 daysLate
             );
+
         }
 
         await this.repository
         .returnRental(
+
             rental.id,
+
             fine
+
         );
 
     }

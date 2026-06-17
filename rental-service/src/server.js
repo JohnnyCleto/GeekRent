@@ -1,13 +1,35 @@
+require('dotenv').config();
+
+const express =
+require('express');
+
+const rentalRoutes =
+require(
+'./presentation/routes/rentalRoutes'
+);
+
 const app =
-require('./app');
+express();
+
+app.use(
+express.json()
+);
+
+app.use(
+'/rentals',
+rentalRoutes
+);
 
 const PORT =
-process.env.PORT || 3001;
+process.env.PORT ||
+3003;
 
-app.listen(PORT, () => {
+app.listen(
+PORT,
+() => {
 
-    console.log(
-        `Servidor rodando na porta ${PORT}`
-    );
+console.log(
+`Rental Service rodando na porta ${PORT}`
+);
 
 });

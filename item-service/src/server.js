@@ -1,13 +1,21 @@
-const app =
-require('./app');
+const express = require('express');
+
+const itemRoutes =
+require('./presentation/routes/itemRoutes');
+
+const app = express();
+
+app.use(express.json());
+
+app.use('/items', itemRoutes);
 
 const PORT =
-process.env.PORT || 3001;
+process.env.PORT || 3002;
 
-app.listen(PORT, () => {
+app.listen(PORT,()=>{
 
-    console.log(
-        `Servidor rodando na porta ${PORT}`
-    );
+ console.log(
+ `Item Service rodando na porta ${PORT}`
+ );
 
 });

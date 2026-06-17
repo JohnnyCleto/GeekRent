@@ -1,4 +1,4 @@
-class CreateItemUseCase {
+class UpdateItemUseCase {
 
  constructor(repository){
 
@@ -7,14 +7,14 @@ class CreateItemUseCase {
 
  }
 
- async execute(data){
+ async execute(id,data){
 
   await this.repository
-  .create(data);
+  .update(id,data);
 
  }
 
 }
 
 module.exports =
-CreateItemUseCase;
+UpdateItemUseCase;

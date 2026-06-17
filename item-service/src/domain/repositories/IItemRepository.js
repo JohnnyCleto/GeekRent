@@ -1,15 +1,16 @@
 class IItemRepository {
 
-    create(item) {}
+ create(){}
 
-    findAll() {}
+ findAll(){}
 
-    findById(id) {}
+ findById(){}
 
-    update(id,data) {}
+ update(){}
 
-    delete(id) {}
+ delete(){}
 
 }
 
-module.exports = IItemRepository;
+module.exports =
+IItemRepository;

@@ -8,26 +8,29 @@ const controller =
 require('../controllers/ItemController');
 
 router.post(
-    '/',
-    controller.create
+ '/',
+ controller.create
 );
 
 router.get(
-    '/',
-    controller.list
+ '/',
+ controller.list
 );
 
 router.get(
-    '/:id',
-    controller.findById
+ '/:id',
+ controller.findById
 );
 
 router.put(
-    '/:id',
-    controller.update
+ '/:id',
+ controller.update
 );
 
 router.delete(
-    '/:id',
-    controller.delete
+ '/:id',
+ controller.delete
 );
+
+module.exports =
+router;

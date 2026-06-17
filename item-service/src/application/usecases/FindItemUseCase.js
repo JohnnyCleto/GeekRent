@@ -1,4 +1,4 @@
-class ListItemsUseCase {
+class FindItemUseCase {
 
  constructor(repository){
 
@@ -7,14 +7,14 @@ class ListItemsUseCase {
 
  }
 
- async execute(){
+ async execute(id){
 
   return this.repository
-  .findAll();
+  .findById(id);
 
  }
 
 }
 
 module.exports =
-ListItemsUseCase;
+FindItemUseCase;

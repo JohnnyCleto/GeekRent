@@ -1,14 +1,14 @@
 const express =
 require('express');
 
-const authRoutes =
-require('./presentation/routes/authRoutes');
+const rentalRoutes =
+require('./presentation/routes/rentalRoutes');
 
 const app =
 express();
 
 app.use(express.json());
 
-app.use('/auth', authRoutes);
+app.use('/rentals', rentalRoutes);
 
 module.exports = app;
