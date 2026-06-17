@@ -1,0 +1,77 @@
+.create-item-container {
+
+    max-width: 700px;
+
+    margin: 40px auto;
+
+    padding: 30px;
+
+    background: #161b22;
+
+    border-radius: 20px;
+
+    box-shadow: 0 0 20px rgba(124,58,237,.3);
+
+}
+
+.create-item-container h1 {
+
+    text-align: center;
+
+    color: white;
+
+    margin-bottom: 20px;
+}
+
+.create-item-container input,
+.create-item-container textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #22272e;
+
+    color: white;
+
+    font-size: 15px;
+}
+
+.create-item-container textarea {
+
+    min-height: 120px;
+
+    resize: vertical;
+}
+
+.create-item-container button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    background: #7c3aed;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+.create-item-container button:hover {
+
+    background: #6d28d9;
+}

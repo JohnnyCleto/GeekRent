@@ -1,159 +1,199 @@
-import { useEffect, useState } from 'react';
+import {
+useEffect,
+useState
+}
+from 'react';
 
 import {
-  itemApi,
-  rentalApi,
-} from "../services/api";
+getDashboard
+}
+from '../services/dashboardApi';
 
-import DashboardChart from '../components/DashboardChart';
+import {
 
-import usePermissions from '../hooks/usePermissions';
+BarChart,
+Bar,
+XAxis,
+YAxis,
+Tooltip,
+ResponsiveContainer
 
-import AdminLayout from '../layouts/AdminLayout';
+}
+from 'recharts';
 
-import ClientLayout from '../layouts/ClientLayout';
+function Dashboard(){
 
-import '../styles/dashboard.css';
+const [data,
+setData]=
+useState(null);
 
-function Dashboard() {
+useEffect(()=>{
 
-  const { isAdmin } = usePermissions();
+load();
 
-  const [totalItems, setTotalItems] = useState(0);
+},[]);
 
-  const [totalRentals, setTotalRentals] = useState(0);
+async function load(){
 
-  const [loading, setLoading] = useState(true);
+const response =
+await getDashboard();
 
-  useEffect(() => {
+setData(
+response.data
+);
 
-    load();
+}
 
-  }, []);
+if(!data){
 
-  async function load() {
+return(
+<h2>
+Carregando...
+</h2>
+);
 
-    try {
+}
 
-      const [itemsResponse, rentalsResponse] = await Promise.all([
+return(
 
-        itemApi.get('/items'),
+<div className="dashboard-page">
 
-        rentalApi.get('/rentals')
+<h1>
 
-      ]);
+📊 Dashboard GeekRent
 
-      setTotalItems(itemsResponse.data.length);
+</h1>
 
-      setTotalRentals(rentalsResponse.data.length);
+<div className="stats-grid">
 
-    }
+<div className="stat-card">
 
-    catch (error) {
+<h3>
 
-      console.log(error);
+💰 Receita
 
-    }
+</h3>
 
-    finally {
+<p>
 
-      setLoading(false);
+R$
+{data.stats.totalRevenue}
 
-    }
+</p>
 
-  }
+</div>
 
-  if (loading) {
+<div className="stat-card">
 
-    return <h2>Carregando Dashboard...</h2>;
+<h3>
 
-  }
+📦 Itens
 
-  const dashboardContent = (
+</h3>
 
-    <>
+<p>
 
-      <h1>
+{data.stats.totalItems}
 
-        Dashboard
+</p>
 
-      </h1>
+</div>
 
-      <div className='dashboard-grid'>
+<div className="stat-card">
 
-        <div className='dashboard-card'>
+<h3>
 
-          <span>📦</span>
+🔄 Locações
 
-          <h2>
+</h3>
 
-            {totalItems}
+<p>
 
-          </h2>
+{data.stats.totalRentals}
 
-          <p>
+</p>
 
-            Itens
+</div>
 
-          </p>
+</div>
 
-        </div>
+<h2>
 
-        <div className='dashboard-card'>
+📈 Receita Mensal
 
-          <span>📅</span>
+</h2>
 
-          <h2>
+<div className="chart-box">
 
-            {totalRentals}
+<ResponsiveContainer
+width="100%"
+height={300}
+>
 
-          </h2>
+<BarChart
+data={data.revenue}
+>
 
-          <p>
+<XAxis
+dataKey="month"
+/>
 
-            Locações
+<YAxis/>
 
-          </p>
+<Tooltip/>
 
-        </div>
+<Bar
+dataKey="revenue"
+/>
 
-      </div>
+</BarChart>
 
-      <DashboardChart
+</ResponsiveContainer>
 
-        items={totalItems}
+</div>
 
-        rentals={totalRentals}
+<h2>
 
-      />
+🔥 Itens Mais Alugados
 
-    </>
+</h2>
 
-  );
+<div className="top-items">
 
-  if (isAdmin) {
+{
 
-    return (
+data.topItems.map(
+(item,index)=>(
 
-      <AdminLayout>
+<div
+key={index}
+className="top-card"
+>
 
-        {dashboardContent}
+<h3>
 
-      </AdminLayout>
+{item.title}
 
-    );
+</h3>
 
-  }
+<p>
 
-  return (
+{item.rentals}
+ locações
 
-    <ClientLayout>
+</p>
 
-      {dashboardContent}
+</div>
 
-    </ClientLayout>
+))
 
-  );
+}
+
+</div>
+
+</div>
+
+);
 
 }
 

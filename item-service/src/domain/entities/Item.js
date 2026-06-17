@@ -1,39 +1,45 @@
+// item-service/src/domain/entities/Item.js
+
 class Item {
 
- constructor(
+    constructor(data = {}) {
 
-  id,
+        this.id =
+            data.id || null;
 
-  ownerId,
+        this.owner_id =
+            data.owner_id || null;
 
-  title,
+        this.title =
+            data.title || '';
 
-  description,
+        this.description =
+            data.description || '';
 
-  category,
+        this.category =
+            data.category || '';
 
-  rentalPrice,
+        this.rental_price =
+            data.rental_price || 0;
 
-  available
+        this.image_url =
+            data.image_url || null;
 
- ){
+        this.city =
+            data.city || '';
 
-  this.id=id;
+        this.state =
+            data.state || '';
 
-  this.ownerId=ownerId;
+        this.available =
+            data.available ?? true;
 
-  this.title=title;
+        this.views =
+            data.views || 0;
 
-  this.description=description;
-
-  this.category=category;
-
-  this.rentalPrice=rentalPrice;
-
-  this.available=available;
-
- }
-
+        this.created_at =
+            data.created_at || null;
+    }
 }
 
 module.exports = Item;

@@ -1,54 +1,78 @@
-.dashboard-grid{
+.dashboard-page{
+
+padding:40px;
+
+color:white;
+
+}
+
+.stats-grid{
 
 display:grid;
 
 grid-template-columns:
+repeat(3,1fr);
 
-repeat(auto-fit,minmax(250px,1fr));
-
-gap:30px;
+gap:20px;
 
 margin-bottom:40px;
 
 }
 
-.dashboard-card{
+.stat-card{
 
-background:#1d2333;
-
-padding:30px;
-
-border-radius:20px;
-
-text-align:center;
-
-transition:.3s;
-
-}
-
-.dashboard-card:hover{
-
-transform:translateY(-5px);
-
-}
-
-.item-card{
-
-background:#1d2333;
+background:#1e293b;
 
 padding:25px;
 
 border-radius:20px;
 
+text-align:center;
+
+box-shadow:
+0 0 15px rgba(0,0,0,.3);
+
 }
 
-.item-card img{
+.stat-card p{
 
-width:100%;
+font-size:28px;
 
-height:250px;
+font-weight:bold;
 
-object-fit:cover;
+}
+
+.chart-box{
+
+background:#1e293b;
+
+padding:25px;
+
+border-radius:20px;
+
+margin-bottom:40px;
+
+}
+
+.top-items{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fill,
+minmax(250px,1fr)
+);
+
+gap:20px;
+
+}
+
+.top-card{
+
+background:#1e293b;
+
+padding:20px;
 
 border-radius:15px;
 

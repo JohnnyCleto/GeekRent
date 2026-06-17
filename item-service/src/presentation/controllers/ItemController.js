@@ -18,111 +18,244 @@ require('../../application/usecases/DeleteItemUseCase');
 
 class ItemController {
 
- async create(req,res){
+    async getAll(req,res){
 
-  const repository =
-  new ItemRepository();
+    try{
 
-  const useCase =
-  new CreateItemUseCase(
-   repository
-  );
+        const repository =
+        new ItemRepository();
 
-  await useCase.execute(
-   req.body
-  );
+        const items =
+        await repository.findAll();
 
-  return res.status(201)
-  .json({
-   message:'Item criado'
-  });
+        res.json(items);
 
- }
+    }catch(error){
 
- async list(req,res){
+        res.status(500).json({
+            error:error.message
+        });
 
-  const repository =
-  new ItemRepository();
+    }
+}
 
-  const useCase =
-  new ListItemsUseCase(
-   repository
-  );
+    async create(req, res) {
 
-  const items =
-  await useCase.execute();
+        try {
 
-  return res.json(items);
+            const repository =
+            new ItemRepository();
 
- }
+            const useCase =
+            new CreateItemUseCase(
+                repository
+            );
 
- async findById(req,res){
+            const item =
+            await useCase.execute(
+                req.body
+            );
 
-  const repository =
-  new ItemRepository();
+            return res.status(201)
+            .json(item);
 
-  const useCase =
-  new FindItemUseCase(
-   repository
-  );
+        } catch(error) {
 
-  const item =
-  await useCase.execute(
-   req.params.id
-  );
+            return res.status(400)
+            .json({
+                error: error.message
+            });
 
-  return res.json(item);
+        }
+    }
 
- }
+    async list(req, res) {
 
- async update(req,res){
+        try {
 
-  const repository =
-  new ItemRepository();
+            const repository =
+            new ItemRepository();
 
-  const useCase =
-  new UpdateItemUseCase(
-   repository
-  );
+            const useCase =
+            new ListItemsUseCase(
+                repository
+            );
 
-  await useCase.execute(
+            const items =
+            await useCase.execute();
 
-   req.params.id,
+            return res.json(items);
 
-   req.body
+        } catch(error) {
 
-  );
+            return res.status(500)
+            .json({
+                error: error.message
+            });
 
-  return res.json({
+        }
+    }
 
-   message:'Atualizado'
+    async findById(req, res) {
 
-  });
+        try {
 
- }
+            const repository =
+            new ItemRepository();
 
- async delete(req,res){
+            await repository.incrementViews(
+                req.params.id
+            );
 
-  const repository =
-  new ItemRepository();
+            const useCase =
+            new FindItemUseCase(
+                repository
+            );
 
-  const useCase =
-  new DeleteItemUseCase(
-   repository
-  );
+            const item =
+            await useCase.execute(
+                req.params.id
+            );
 
-  await useCase.execute(
-   req.params.id
-  );
+            if(!item){
 
-  return res.json({
+                return res.status(404)
+                .json({
+                    error:'Item não encontrado'
+                });
 
-   message:'Removido'
+            }
 
-  });
+            return res.json(item);
 
- }
+        } catch(error) {
 
+            return res.status(500)
+            .json({
+                error:error.message
+            });
+
+        }
+    }
+
+    async update(req,res){
+
+        try{
+
+            const repository =
+            new ItemRepository();
+
+            const useCase =
+            new UpdateItemUseCase(
+                repository
+            );
+
+            const item =
+            await useCase.execute(
+                req.params.id,
+                req.body
+            );
+
+            return res.json(item);
+
+        } catch(error){
+
+            return res.status(400)
+            .json({
+                error:error.message
+            });
+
+        }
+    }
+
+    async delete(req,res){
+
+        try{
+
+            const repository =
+            new ItemRepository();
+
+            const useCase =
+            new DeleteItemUseCase(
+                repository
+            );
+
+            await useCase.execute(
+                req.params.id
+            );
+
+            return res.json({
+
+                success:true,
+
+                message:
+                'Item removido com sucesso'
+
+            });
+
+        } catch(error){
+
+            return res.status(400)
+            .json({
+                error:error.message
+            });
+
+        }
+    }
+
+    async findByCategory(req,res){
+
+        try{
+
+            const repository =
+            new ItemRepository();
+
+            const items =
+            await repository
+            .findByCategory(
+                req.params.category
+            );
+
+            return res.json(items);
+
+        } catch(error){
+
+            return res.status(500)
+            .json({
+                error:error.message
+            });
+
+        }
+    }
+
+    async findByLocation(req,res){
+
+        try{
+
+            const repository =
+            new ItemRepository();
+
+            const items =
+            await repository
+            .findByLocation(
+
+                req.query.city,
+
+                req.query.state
+
+            );
+
+            return res.json(items);
+
+        } catch(error){
+
+            return res.status(500)
+            .json({
+                error:error.message
+            });
+
+        }
+    }
 }
 
 module.exports =

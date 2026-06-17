@@ -32,5 +32,10 @@ router.delete(
  controller.delete
 );
 
+router.get(
+    '/',
+    ItemController.getAll
+);
+
 module.exports =
 router;
