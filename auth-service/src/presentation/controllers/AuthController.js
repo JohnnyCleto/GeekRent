@@ -97,8 +97,6 @@ class AuthController {
 
             const repository = new UserRepository();
 
-            const profile = await repository.getProfile(req.user.id);
-
             const items = await repository.getUserItems(req.user.id);
 
             const stats = await repository.getStats(req.user.id);
