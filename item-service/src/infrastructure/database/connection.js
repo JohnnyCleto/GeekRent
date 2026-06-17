@@ -1,36 +1,28 @@
-const mysql =
-require('mysql2/promise');
+const mysql = require('mysql2/promise');
 
 class DatabaseConnection {
 
- static instance;
+    static instance;
 
- static async getInstance(){
+    static async getInstance() {
 
-  if(
-   !DatabaseConnection.instance
-  ){
+        if (!DatabaseConnection.instance) {
 
-   DatabaseConnection.instance =
-   mysql.createPool({
+            DatabaseConnection.instance =
+                mysql.createPool({
+                    host: process.env.DB_HOST,
+                    user: process.env.DB_USER,
+                    password: process.env.DB_PASSWORD,
+                    database: process.env.DB_NAME,
+                    port: process.env.DB_PORT,
+                    waitForConnections: true,
+                    connectionLimit: 10,
+                    queueLimit: 0
+                });
+        }
 
-    host:'localhost',
-
-    user:'root',
-
-    password:'root',
-
-    database:'geekrent'
-
-   });
-
-  }
-
-  return DatabaseConnection.instance;
-
- }
-
+        return DatabaseConnection.instance;
+    }
 }
 
-module.exports =
-DatabaseConnection;
+module.exports = DatabaseConnection;
