@@ -5,7 +5,7 @@ export const getProfile =
 ()=>{
 
 return authApi.get(
-'/profile/me'
+'/auth/me'
 );
 
 };
