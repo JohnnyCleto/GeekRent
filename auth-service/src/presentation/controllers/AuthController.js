@@ -13,30 +13,36 @@ class AuthController {
 
         try{
 
+            const {
+                name,
+                email,
+                password
+            } = req.body;
+
             const repository =
-            new UserRepository();
+                new UserRepository();
 
             const useCase =
-            new RegisterUserUseCase(
-                repository
-            );
+                new RegisterUserUseCase(
+                    repository
+                );
 
-            await useCase.execute(
-                req.body
-            );
+            const user =
+                await useCase.execute(
+                    name,
+                    email,
+                    password
+                );
 
-            return res.status(201)
-            .json({
-                message:'Usuário criado'
-            });
+            res.status(201)
+               .json(user);
 
         }catch(error){
 
-            return res.status(400)
-            .json({
-                error:error.message
-            });
-
+            res.status(400)
+               .json({
+                    error:error.message
+               });
         }
     }
 
@@ -50,32 +56,29 @@ class AuthController {
             } = req.body;
 
             const repository =
-            new UserRepository();
+                new UserRepository();
 
             const useCase =
-            new LoginUseCase(
-                repository
-            );
+                new LoginUseCase(
+                    repository
+                );
 
             const result =
-            await useCase.execute(
-                email,
-                password
-            );
+                await useCase.execute(
+                    email,
+                    password
+                );
 
-            return res.json(result);
+            res.json(result);
 
         }catch(error){
 
-            return res.status(401)
-            .json({
-                error:error.message
-            });
-
+            res.status(401)
+               .json({
+                    error:error.message
+               });
         }
-
     }
-
 }
 
 module.exports =

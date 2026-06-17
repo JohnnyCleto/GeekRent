@@ -1,63 +1,62 @@
 const bcrypt =
-require('bcrypt');
+require('bcryptjs');
 
 const jwt =
 require('jsonwebtoken');
 
-const {
-    jwtSecret,
-    jwtExpiresIn
-} = require('../../config/env');
+const { jwtSecret } =
+require('../../config/env');
 
 class LoginUseCase {
 
     constructor(userRepository) {
+
         this.userRepository =
-        userRepository;
+            userRepository;
     }
 
-    async execute(email,password){
+    async execute(
+        email,
+        password
+    ) {
 
         const user =
-        await this.userRepository
-        .findByEmail(email);
+            await this.userRepository
+                .findByEmail(email);
 
-        if(!user){
+        if (!user)
             throw new Error(
                 'Usuário não encontrado'
             );
-        }
 
-        const validPassword =
-        await bcrypt.compare(
-            password,
-            user.password
-        );
+        const valid =
+            await bcrypt.compare(
+                password,
+                user.password
+            );
 
-        if(!validPassword){
+        if (!valid)
             throw new Error(
                 'Senha inválida'
             );
-        }
 
         const token =
-        jwt.sign(
-            {
-                id:user.id,
-                role:user.role
-            },
-            jwtSecret,
-            {
-                expiresIn:jwtExpiresIn
-            }
-        );
+            jwt.sign(
+                {
+                    id: user.id,
+                    role: user.role
+                },
+                jwtSecret,
+                {
+                    expiresIn:'1d'
+                }
+            );
 
         return {
             token,
             user
         };
     }
-
 }
 
 module.exports =

@@ -5,15 +5,15 @@ class User {
         name,
         email,
         password,
-        role
+        role = 'client'
     ) {
+
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
     }
-
 }
 
 module.exports = User;

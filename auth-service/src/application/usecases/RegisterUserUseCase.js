@@ -1,39 +1,42 @@
 const bcrypt =
-require('bcrypt');
+require('bcryptjs');
 
 class RegisterUserUseCase {
 
-    constructor(userRepository){
+    constructor(userRepository) {
+
         this.userRepository =
-        userRepository;
+            userRepository;
     }
 
-    async execute(data){
+    async execute(
+        name,
+        email,
+        password
+    ) {
 
         const existingUser =
-        await this.userRepository
-        .findByEmail(data.email);
+            await this.userRepository
+                .findByEmail(email);
 
-        if(existingUser){
+        if (existingUser) {
+
             throw new Error(
-                'Email já cadastrado'
+                'Usuário já existe'
             );
         }
 
-        const password =
-        await bcrypt.hash(
-            data.password,
-            10
-        );
+        const hashedPassword =
+            await bcrypt.hash(password,10);
 
-        await this.userRepository
-        .create({
-            ...data,
-            password
-        });
-
+        return await this.userRepository
+            .create({
+                name,
+                email,
+                password: hashedPassword,
+                role: 'client'
+            });
     }
-
 }
 
 module.exports =

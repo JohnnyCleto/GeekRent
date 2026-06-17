@@ -1,3 +1,4 @@
+// auth-service/src/infrastructure/database.js
 require('dotenv').config();
 
 const mysql = require('mysql2');
