@@ -39,6 +39,6 @@ router.get(
     authMiddleware,
     DashboardController.getDashboard
 );
-
+router.get('/profile/me', authMiddleware, ProfileController.getProfile);
 module.exports =
 router;
