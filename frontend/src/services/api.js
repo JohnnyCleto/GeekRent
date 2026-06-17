@@ -1,27 +1,31 @@
-// src/services/api.js
-import { setupInterceptor } from '../middlewares/apiInterceptor';
-import axios from 'axios';
+import axios from 'axios'
 
 export const authApi = axios.create({
 
 baseURL: import.meta.env.VITE_AUTH_URL
 
-});
+})
 
-export const itemApi = axios.create({
+export function setupInterceptor(){
 
-baseURL: import.meta.env.VITE_ITEM_URL
+authApi.interceptors.request.use(
 
-});
+(config)=>{
 
-export const rentalApi = axios.create({
+const token = localStorage.getItem('token')
 
-baseURL: import.meta.env.VITE_RENTAL_URL
+if(token){
 
-});
+config.headers.Authorization=`Bearer ${token}`
 
-setupInterceptor(authApi);
+}
 
-setupInterceptor(itemApi);
+return config
 
-setupInterceptor(rentalApi);
+},
+
+(error)=>Promise.reject(error)
+
+)
+
+}
