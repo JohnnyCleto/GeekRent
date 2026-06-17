@@ -1,17 +1,15 @@
 import axios from 'axios';
 
-console.log("AUTH URL =", import.meta.env.VITE_AUTH_URL);
-
 export const authApi = axios.create({
-  baseURL: import.meta.env.VITE_AUTH_URL
+  baseURL: 'https://auth-service-production-1caf.up.railway.app'
 });
 
 export const itemApi = axios.create({
-  baseURL: import.meta.env.VITE_ITEM_URL
+  baseURL: 'https://attractive-art-production-3668.up.railway.app'
 });
 
 export const rentalApi = axios.create({
-  baseURL: import.meta.env.VITE_RENTAL_URL
+  baseURL: 'https://mellow-wholeness-production-4fc6.up.railway.app'
 });
 
 export function setupInterceptor() {
@@ -28,9 +26,7 @@ export function setupInterceptor() {
         }
 
         return config;
-
-      },
-      (error) => Promise.reject(error)
+      }
     );
   };
 
