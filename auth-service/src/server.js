@@ -9,6 +9,9 @@ require('./presentation/routes/authRoutes');
 const initDatabase =
 require('./infrastructure/database/initDatabase');
 
+const profileRoutes =
+require('./presentation/routes/profileRoutes');
+
 const app = express();
 
 app.use(cors());
