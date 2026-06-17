@@ -33,4 +33,18 @@ status:'ok'
 
 });
 
+const cors = require('cors');
+
+app.use(cors({
+
+origin:[
+
+'https://natural-expression-production-583b.up.railway.app'
+
+],
+
+credentials:true
+
+}));
+
 module.exports = app;
