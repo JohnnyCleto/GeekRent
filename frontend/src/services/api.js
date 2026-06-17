@@ -17,9 +17,3 @@ export const rentalApi = axios.create({
 baseURL: import.meta.env.VITE_RENTAL_URL
 
 });
-
-setupInterceptor(authApi);
-
-setupInterceptor(itemApi);
-
-setupInterceptor(rentalApi);
