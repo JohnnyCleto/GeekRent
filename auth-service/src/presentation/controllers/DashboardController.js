@@ -1,3 +1,4 @@
+// auth-service/src/presentation/controllers/DashboardController.js
 const DashboardRepository =
 require('../../infrastructure/repositories/DashboardRepository');
 
