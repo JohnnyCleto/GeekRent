@@ -1,3 +1,4 @@
+// item-service/src/infrastructure/repositories/ItemRepository.js
 const DatabaseConnection =
 require('../database/connection');
 
@@ -47,6 +48,8 @@ class ItemRepository {
             ...item
         };
     }
+
+    
 
 async findAll() {
 
