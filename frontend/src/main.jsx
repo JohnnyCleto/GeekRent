@@ -11,7 +11,9 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { setupInterceptor, authApi, itemApi, rentalApi } from './services/api';
 
+setupInterceptor();
 ReactDOM.createRoot(
 
 document.getElementById('root')
