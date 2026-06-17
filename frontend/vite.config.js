@@ -8,11 +8,7 @@ export default defineConfig({
 
   server:{
 
-    allowedHosts:[
-
-      'natural-expression-production-2e65.up.railway.app'
-
-    ]
+    allowedHosts:true
 
   }
 
