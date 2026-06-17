@@ -1,50 +1,62 @@
-const express =
-require('express');
+require('dotenv').config();
 
-const authRoutes =
-require('./presentation/routes/authRoutes');
+const express = require('express');
+const cors = require('cors');
 
-const app =
-express();
+const authRoutes = require('./presentation/routes/authRoutes');
+const initDatabase = require('./infrastructure/database/initDatabase');
+
+const app = express();
+
+/**
+ * 🔥 CORS CORRETO (SEM BUG DE PRODUÇÃO)
+ */
+app.use(cors({
+    origin: [
+        'https://natural-expression-production-583b.up.railway.app'
+    ],
+    credentials: true
+}));
 
 app.use(express.json());
 
+/**
+ * ROUTES
+ */
 app.use('/auth', authRoutes);
 
-app.get('/', (req,res)=>{
-
-res.json({
-
-service:'GeekRent Auth Service',
-
-status:'online'
-
+/**
+ * HEALTH
+ */
+app.get('/', (req, res) => {
+    res.json({
+        service: 'GeekRent Auth Service',
+        status: 'online'
+    });
 });
 
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok'
+    });
 });
 
-app.get('/health',(req,res)=>{
+const PORT = process.env.PORT || 3001;
 
-res.json({
+(async () => {
+    try {
 
-status:'ok'
+        await initDatabase();
+        console.log("DB conectado com sucesso");
 
-});
+        app.listen(PORT, () => {
+            console.log(`Auth Service rodando na porta ${PORT}`);
+        });
 
-});
+    } catch (error) {
 
-const cors = require('cors');
+        console.error('ERRO AO INICIAR DB:', error);
 
-app.use(cors({
-
-origin:[
-
-'https://natural-expression-production-583b.up.railway.app'
-
-],
-
-credentials:true
-
-}));
-
-module.exports = app;
+        process.exit(1);
+    }
+})();
