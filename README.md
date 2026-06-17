@@ -121,3 +121,10 @@ http://localhost:3002
 Rentals:
 
 http://localhost:3003
+
+----
+github:
+https://github.com/JohnnyCleto/GeekRent
+
+railway:
+https://natural-expression-production-583b.up.railway.app/Register
