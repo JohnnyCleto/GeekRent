@@ -1,44 +1,29 @@
 // src/presentation/routes/authRoutes.js
 
-const express =
-require('express');
+const express = require('express');
+const router = express.Router();
 
-const router =
-express.Router();
+const AuthController = require('../controllers/AuthController');
+const ProfileController = require('../controllers/ProfileController');
+const DashboardController = require('../controllers/DashboardController');
 
-const AuthController =
-require('../controllers/AuthController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-const ProfileController =
-require('../controllers/ProfileController');
+/**
+ * AUTH
+ */
+router.post('/register', AuthController.register);
+router.post('/login', AuthController.login);
 
-const DashboardController =
-require('../controllers/DashboardController');
+/**
+ * PROFILE
+ * (rota única e padrão)
+ */
+router.get('/me', authMiddleware, ProfileController.getProfile);
 
-const authMiddleware =
-require('../middlewares/authMiddleware');
+/**
+ * DASHBOARD
+ */
+router.get('/dashboard', authMiddleware, DashboardController.getDashboard);
 
-router.post(
-    '/register',
-    AuthController.register
-);
-
-router.post(
-    '/login',
-    AuthController.login
-);
-
-router.get(
-    '/me',
-    authMiddleware,
-    ProfileController.getProfile
-);
-
-router.get(
-    '/dashboard',
-    authMiddleware,
-    DashboardController.getDashboard
-);
-router.get('/profile/me', authMiddleware, ProfileController.getProfile);
-module.exports =
-router;
+module.exports = router;
