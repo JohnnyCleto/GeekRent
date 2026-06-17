@@ -2,7 +2,7 @@ const express =
 require('express');
 
 const authRoutes =
-require('./presentation/routes/authRoutes');
+require('./src/presentation/routes/authRoutes');
 
 const app =
 express();
