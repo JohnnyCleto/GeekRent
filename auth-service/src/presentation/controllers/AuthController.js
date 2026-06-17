@@ -7,125 +7,114 @@ require('../../application/usecases/RegisterUserUseCase');
 const LoginUseCase =
 require('../../application/usecases/LoginUseCase');
 
+const jwt =
+require('jsonwebtoken');
+
+const { jwtSecret } =
+require('../../config/env');
+
 class AuthController {
 
-    async register(req,res){
+    async register(req, res) {
 
-        try{
+        try {
 
-            const {
+            const { name, email, password } = req.body;
+
+            const repository = new UserRepository();
+
+            const useCase = new RegisterUserUseCase(repository);
+
+            const user = await useCase.execute(
                 name,
                 email,
                 password
-            } = req.body;
+            );
 
-            const repository =
-                new UserRepository();
+            return res.status(201).json({
+                message: 'Usuário criado com sucesso',
+                user
+            });
 
-            const useCase =
-                new RegisterUserUseCase(
-                    repository
-                );
+        } catch (error) {
 
-            const user =
-                await useCase.execute(
-                    name,
-                    email,
-                    password
-                );
+            return res.status(400).json({
+                error: error.message
+            });
 
-            res.status(201)
-               .json(user);
-
-        }catch(error){
-
-            res.status(400)
-               .json({
-                    error:error.message
-               });
         }
     }
 
-    async login(req,res){
+    async login(req, res) {
 
-        try{
+        try {
 
-            const {
-                email,
-                password
-            } = req.body;
+            const { email, password } = req.body;
 
-            const repository =
-                new UserRepository();
+            const repository = new UserRepository();
 
-            const useCase =
-                new LoginUseCase(
-                    repository
-                );
+            const useCase = new LoginUseCase(repository);
 
-            const result =
-                await useCase.execute(
-                    email,
-                    password
-                );
+            const user = await useCase.execute(email, password);
 
-            res.json(result);
+            // 🔥 GARANTIR QUE O TOKEN TEM ID (CORREÇÃO PRINCIPAL)
+            const token = jwt.sign(
+                {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                },
+                jwtSecret,
+                { expiresIn: '7d' }
+            );
 
-        }catch(error){
+            return res.json({
+                token,
+                user
+            });
 
-            res.status(401)
-               .json({
-                    error:error.message
-               });
+        } catch (error) {
+
+            return res.status(401).json({
+                error: error.message
+            });
+
         }
     }
 
-    async getProfile(req,res){
+    async getProfile(req, res) {
 
-        try{
+        try {
 
-            const repository =
-            new UserRepository();
+            // 🔒 proteção extra
+            if (!req.user || !req.user.id) {
+                return res.status(401).json({
+                    error: 'Token inválido (id ausente)'
+                });
+            }
 
-            const profile =
-            await repository.getProfile(
-                req.user.id
-            );
+            const repository = new UserRepository();
 
-            const items =
-            await repository.getUserItems(
-                req.user.id
-            );
+            const profile = await repository.getProfile(req.user.id);
 
-            const stats =
-            await repository.getStats(
-                req.user.id
-            );
+            const items = await repository.getUserItems(req.user.id);
 
-            res.json({
+            const stats = await repository.getStats(req.user.id);
 
+            return res.json({
                 profile,
-
                 items,
-
                 stats
-
             });
 
-        }
+        } catch (error) {
 
-        catch(error){
-
-            res.status(500).json({
-
-                error:error.message
-
+            return res.status(500).json({
+                error: error.message
             });
 
         }
     }
-
 }
 
-module.exports =
-new AuthController();
+module.exports = new AuthController();
